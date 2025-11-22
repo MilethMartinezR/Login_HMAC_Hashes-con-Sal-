@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verificación de Base de Datos</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f2f5;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .header h1 {
+      color: #333;
+      font-size: 28px;
+      font-weight: 600;
+    }
+    .header .subtitle {
+      color: #666;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+    .container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    h2 {
+      color: #333;
+      margin-bottom: 20px;
+      font-size: 22px;
+      font-weight: 600;
+    }
+    .info-box {
+      background: #E0F2FE;
+      border-left: 4px solid #0EA5E9;
+      padding: 20px;
+      border-radius: 6px;
+      margin-bottom: 25px;
+    }
+    .info-box h3 {
+      color: #0369A1;
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+    .info-box ul {
+      margin-left: 20px;
+      color: #0C4A6E;
+    }
+    .info-box li {
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+    .table-wrapper {
+      overflow-x: auto;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      margin-bottom: 25px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+    }
+    th {
+      background: #F3F4F6;
+      color: #374151;
+      padding: 14px 12px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid #E5E7EB;
+    }
+    td {
+      padding: 12px;
+      border-bottom: 1px solid #E5E7EB;
+      color: #6B7280;
+      font-size: 13px;
+    }
+    tr:hover {
+      background: #F9FAFB;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    .mono {
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+      word-break: break-all;
+      color: #033e81;
+    }
+    .user-id {
+      font-weight: 600;
+      color: #4F46E5;
+    }
+    .username {
+      font-weight: 600;
+      color: #333;
+    }
+    .back-link {
+      text-align: center;
+      margin-top: 25px;
+    }
+    .back-link a {
+      color: white;
+      background: #4F46E5;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 12px 24px;
+      border-radius: 6px;
+      display: inline-block;
+      transition: all 0.3s ease;
+    }
+    .back-link a:hover {
+      background: #4338CA;
+    }
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #9CA3AF;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Base de Datos</h1>
+    <div class="subtitle">Como se almaceno la informacion de los usuarios</div>
+  </div>
+
+  <div class="container">
+    <h2>Usuarios Registrados</h2>
+    
+    {% if rows %}
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Usuario</th>
+            <th>Hash Contraseña</th>
+            <th>Sal</th>
+            <th>Fecha Creación Usuario</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in rows %}
+          <tr>
+            <td class="user-id">{{ r[0] }}</td>
+            <td class="username">{{ r[1] }}</td>
+            <td class="mono">{{ r[2] }}</td>
+            <td class="mono">{{ r[3] }}</td>
+            <td>{{ r[4] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    
+    <div class="info-box" style="background: #F0FDF4; border-left-color: #10B981;">
+      <h3 style="color: #166534;"Estadísticas:</h3>
+      <ul style="color: #065F46;">
+        <li><strong>Total de usuarios registrados:</strong> {{ rows|length }}</li>
+        <li><strong>Sistema de hash:</strong> SHA-256 con salt único por usuario</li>
+        <li><strong>Autenticación:</strong> HMAC-SHA256 para verificación de mensajes</li>
+      </ul>
+    </div>
+    {% else %}
+    <div class="empty-state">
+      <p>No hay usuarios registrados en la base de datos.</p>
+      <p style="margin-top: 10px; font-size: 13px;">Registra un usuario desde la página principal para comenzar.</p>
+    </div>
+    {% endif %}
+
+    <div class="back-link">
+      <a href="/">← Volver al inicio</a>
+    </div>
+  </div>
+</body>
+</html>
